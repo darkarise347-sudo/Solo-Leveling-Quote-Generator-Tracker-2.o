@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+#// Function to clear screen based on OS (optional, works on most terminals)
+void clearScreen() {
+    #// system("cls"); // Uncomment for Windows
+    #// system("clear"); // Uncomment for Linux/Mac
+    printf("\n========================================\n");
+}
+
+void showSystemWindow(int level, int strength, int agility) {
+    printf("[SYSTEM WINDOW]\n");
+    printf("----------------------------------------\n");
+    printf(" STATUS: [PLAYER]\n");
+    printf(" LEVEL: %d\n", level);
+    printf(" STRENGTH: %d | AGILITY: %d\n", strength, agility);
+    printf(" PENALTY/QUEST STATUS: ACTIVE\n");
+    printf("----------------------------------------\n");
+}
+
+int main() {
+    int choice;
+    int level = 1;
+    int strength = 10;
+    int agility = 10;
+    int questCompleted = 0;
+
+    #// Random quotes array
+    const char* quotes[] = {
+        "\"Arise.\"",
+        "\"If you don't fight, you can't survive.\"",
+        "\"I alone level up.\"",
+        "\"The weak don't have the right to choose how they die.\"",
+        "\"Even if I'm the only one who knows, I will keep going.\""
+    };
+    int totalQuotes = 5;
+
+    srand(time(NULL));
+
+    do {
+        clearScreen();
+        showSystemWindow(level, strength, agility);
+        printf("\nCHOOSE AN OPTION:\n");
+        printf("1. Get Random Sung Jin-woo Quote\n");
+        printf("2. Complete Daily Quest (Pushups & Situps)\n");
+        printf("3. Exit System\n");
+        printf("Enter your choice: ");
+        
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Exiting...\n");
+            break;
+        }
+
+        switch (choice) {
+            case 1: {
+                int randomIndex = rand() % totalQuotes;
+                printf("\n[SYSTEM MESSAGE]\n");
+                printf("Sung Jin-woo says:\n %s\n", quotes[randomIndex]);
+                break;
+            }
+            case 2: {
+                if (questCompleted) {
+                    printf("\n[SYSTEM MESSAGE]\n");
+                    printf("Daily quest already completed for today! Rest up, Hunter.\n");
+                } else {
+                    printf("\n[DAILY QUEST: PREPARE TO BECOME STRONGER]\n");
+                    printf("- 100 Push-ups\n- 100 Sit-ups\n- 100 Squats\n- 10km Running\n");
+                    printf("Quest completed! Stats increased.\n");
+                    strength += 2;
+                    agility += 2;
+                    level += 1;
+                    questCompleted = 1;
+                    printf("[LEVEL UP! You are now Level %d]\n", level);
+                }
+                break;
+            }
+            case 3:
+                printf("\n[SYSTEM DISCONNECTED] Good luck, Hunter.\n");
+                break;
+            default:
+                printf("\n[ERROR] Unknown command.\n");
+        }
+
+        if (choice != 3) {
+            printf("\nPress Enter to continue...");
+            while (getchar() != '\n'); // clear input buffer
+            getchar();
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
